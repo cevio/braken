@@ -1,0 +1,25 @@
+{
+  "name": "modulon",
+  "version": "1.0.0",
+  "description": "JavaScript Private Package Manager, Registry &amp; Website",
+  "private": true,
+  "scripts": {
+    "versions": "node ./scripts/versions.mjs",
+    "create": "node scripts/create.mjs -trace-warnings",
+    "pub": "lerna run build && git add . && git commit -am 'update' && git push && lerna publish",
+    "init": "pnpm i",
+    "watch": "lerna watch -- lerna run build",
+    "dev:app": "node --loader ts-node/esm packages/application/src/test.ts"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.14.8",
+    "@types/npmlog": "^4.1.6",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.23",
+    "lerna": "^7.4.2",
+    "npmlog": "^7.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}
