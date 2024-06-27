@@ -8,7 +8,6 @@ export interface HttpProps {
   maxParamLength?: number,
   allowUnsafeRegex?: boolean,
   caseSensitive?: boolean,
-  hooks?: Record<string | symbol, (ctx: Context) => IClass | Promise<IClass>>
 }
 
 export interface LoadControllerProps {

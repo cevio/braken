@@ -1,6 +1,8 @@
 import { Context } from "koa";
 import { Transform, TransformCallback } from 'node:stream';
 import { Controller } from "./controller";
+import { Plugin } from './plugin';
+import { Context as InjectContext, IClass } from "@modulon/injection";
 
 /**
  * SSE模块输出
@@ -15,7 +17,7 @@ import { Controller } from "./controller";
  *  }
  * }
  */
-export class SSE<T extends Controller> extends Transform {
+export class SSE<T extends Controller = Controller> extends Transform {
   private id = 0;
   private _closed = false;
   constructor(
@@ -74,4 +76,26 @@ export class SSE<T extends Controller> extends Transform {
 function formatSseData(data: any) {
   if (typeof data === 'string') return data;
   return JSON.stringify(data);
+}
+
+const SSEContainer = new Map<Function, number>();
+export class SSEPlugin extends Plugin {
+  private sse: SSE;
+  public onCreate() { }
+  public onRequest<T extends Controller>(controller: T, struct?: IClass<T>) {
+    if (SSEContainer.has(struct)) {
+      this.sse = new SSE(controller, SSEContainer.get(struct));
+    }
+  }
+  public onResponse<T extends Controller>(controller: T) {
+    if (this.sse) {
+      this.sse.render(this.ctx);
+      this.ctx.body = this.sse;
+    }
+  }
+  static Polling(time = 0): ClassDecorator {
+    return target => {
+      SSEContainer.set(target, time);
+    }
+  }
 }

@@ -11,19 +11,29 @@ import { resolve } from 'node:path';
 import { Controller, FileRegExpContainer, MethodContainer, MiddlewareContainer, SSEContainer } from './controller';
 import { Middleware } from './middleware';
 import { compile, match } from 'path-to-regexp';
-import { SSE } from './sse';
+import { IPlugin, Plugin } from './plugin';
 
 declare module 'koa' {
   interface BaseContext {
     $module: InjectionContext,
+    $plugins: Plugin[],
   }
 }
 
-export * from './controller';
-export * from './middleware';
-export * from './middlewares';
-export * from './server';
 export * from './types';
+export * from './plugin';
+export {
+  Controller,
+  getMetaByController,
+  getMethodsByController,
+  getMiddlewaresByController,
+  toPath,
+  isMatch,
+} from './controller';
+export { Middleware } from './middleware';
+export { HttpGlobalMiddlewares } from './middlewares';
+export { Instance } from './server';
+export { SSEPlugin } from './sse';
 
 @Application.Injectable
 export default class Http extends Application {
@@ -34,6 +44,7 @@ export default class Http extends Application {
   public port: number;
 
   private readonly offlines = new Map<IClass, () => void>();
+  private readonly plugins: IPlugin[] = [];
 
   @Application.Inject(HttpGlobalMiddlewares)
   private readonly middlewares: HttpGlobalMiddlewares;
@@ -41,6 +52,11 @@ export default class Http extends Application {
   static readonly namespace = Symbol('http');
   static set(options: HttpProps) {
     ApplicationConfigs.set(Http.namespace, options);
+  }
+
+  public use<T extends Plugin>(plugin: IPlugin<T>) {
+    this.plugins.push(plugin);
+    return this;
   }
 
   public async initialize() {
@@ -64,11 +80,15 @@ export default class Http extends Application {
     koa.use(async (ctx, next) => {
       ctx.$module = new InjectionContext();
       ctx.$module.mergeFrom(this.$ctx);
-      if (props.hooks) {
-        for (const key in props.hooks) {
-          ctx.$module.addHook(key, props.hooks[key]);
-        }
+      ctx.$plugins = [];
+      Object.freeze(ctx.$plugins);
+
+      for (let i = 0; i < this.plugins.length; i++) {
+        const plugin = new this.plugins[i](ctx);
+        ctx.$plugins.push(plugin);
+        await Promise.resolve(plugin.onCreate());
       }
+
       await next();
     })
     koa.use(this.middlewares.compose('prefix'));
@@ -142,7 +162,7 @@ export default class Http extends Application {
       : [];
 
     const _middlewares = this.transformMiddlewares(middlewares);
-    const sseable = SSEContainer.has(controller);
+
     const offline = () => {
       this.app.off(methods, routingPath);
       this.offlines.delete(controller);
@@ -159,11 +179,16 @@ export default class Http extends Application {
 
     this.app.on(methods, routingPath, ..._middlewares, async (ctx, next) => {
       const target = await ctx.$module.use(controller);
-      const sse = sseable ? new SSE(target, SSEContainer.get(controller)) : null;
+      const plugins = ctx.$plugins;
+
+      for (let i = 0; i < plugins.length; i++) {
+        await Promise.resolve(plugins[i].onRequest(target, controller));
+      }
+
       await target.response(ctx, next);
-      if (sse) {
-        sse.render(ctx);
-        ctx.body = sse;
+
+      for (let i = 0; i < plugins.length; i++) {
+        await Promise.resolve(plugins[i].onResponse(target, controller));
       }
     })
 
