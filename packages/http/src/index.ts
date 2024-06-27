@@ -8,7 +8,7 @@ import { IClass, Context as InjectionContext } from '@modulon/injection';
 import { HttpGlobalMiddlewares } from './middlewares';
 import { glob } from 'glob';
 import { resolve } from 'node:path';
-import { Controller, FileRegExpContainer, MethodContainer, MiddlewareContainer, SSEContainer } from './controller';
+import { Controller, FileRegExpContainer, MethodContainer, MiddlewareContainer } from './controller';
 import { Middleware } from './middleware';
 import { compile, match } from 'path-to-regexp';
 import { IPlugin, Plugin } from './plugin';
