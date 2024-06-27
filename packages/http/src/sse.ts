@@ -2,7 +2,7 @@ import { Context } from "koa";
 import { Transform, TransformCallback } from 'node:stream';
 import { Controller } from "./controller";
 import { Plugin } from './plugin';
-import { Context as InjectContext, IClass } from "@modulon/injection";
+import { IClass } from "@modulon/injection";
 
 /**
  * SSE模块输出
@@ -87,7 +87,7 @@ export class SSEPlugin extends Plugin {
       this.sse = new SSE(controller, SSEContainer.get(struct));
     }
   }
-  public onResponse<T extends Controller>(controller: T) {
+  public onResponse() {
     if (this.sse) {
       this.sse.render(this.ctx);
       this.ctx.body = this.sse;

@@ -1,0 +1,28 @@
+{
+  "name": "@modulon/http-plugin-typeorm",
+  "version": "1.0.0",
+  "description": "somethings",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -d && fix-esm-import-path ./dist"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.15.0",
+    "fix-esm-import-path": "^1.4.0"
+  },
+  "dependencies": {
+    "@modulon/http": "workspace:^",
+    "@modulon/injection": "workspace:^",
+    "@modulon/typeorm": "workspace:^",
+    "koa": "^2.15.0",
+    "typeorm": "^0.3.20"
+  }
+}

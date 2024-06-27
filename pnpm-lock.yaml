@@ -77,17 +77,23 @@ importers:
         specifier: ^1.4.0
         version: 1.10.0
 
-  packages/httporm:
+  packages/http-plugin-typeorm:
     dependencies:
       '@modulon/http':
         specifier: workspace:^
         version: link:../http
+      '@modulon/injection':
+        specifier: workspace:^
+        version: link:../injection
       '@modulon/typeorm':
         specifier: workspace:^
         version: link:../typeorm
       koa:
         specifier: ^2.15.0
         version: 2.15.3
+      typeorm:
+        specifier: ^0.3.20
+        version: 0.3.20(ts-node@10.9.2)
     devDependencies:
       '@types/koa':
         specifier: ^2.15.0
