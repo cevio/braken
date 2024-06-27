@@ -1,5 +1,5 @@
 import ioRedis, { RedisOptions } from 'ioredis';
-import { Application, ApplicationConfigs } from "@modulon/application";
+import { Application, ApplicationConfigs } from "@braken/application";
 
 @Application.Injectable
 export default class IoRedis extends Application {

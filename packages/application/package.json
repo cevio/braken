@@ -1,5 +1,5 @@
 {
-  "name": "@modulon/application",
+  "name": "@braken/application",
   "version": "1.0.1",
   "description": "somethings",
   "license": "MIT",
@@ -18,6 +18,6 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@modulon/injection": "workspace:^"
+    "@braken/injection": "workspace:^"
   }
 }

@@ -1,5 +1,5 @@
 import { Context } from 'koa';
-import { IClass } from "@modulon/injection";
+import { IClass } from "@braken/injection";
 import { Controller } from './controller';
 
 export type IPlugin<T extends Plugin = Plugin> = { new(ctx: Context): T };

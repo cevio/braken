@@ -1,4 +1,4 @@
-import { Component, injectable } from "@modulon/injection";
+import { Component, injectable } from "@braken/injection";
 import { Context, Next } from 'koa';
 
 export abstract class Middleware<T extends Context = Context> extends Component {

@@ -1,5 +1,5 @@
 {
-  "name": "@modulon/http-plugin-typeorm",
+  "name": "@braken/http-plugin-typeorm",
   "version": "1.0.1",
   "description": "somethings",
   "license": "MIT",
@@ -19,9 +19,9 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@modulon/http": "workspace:^",
-    "@modulon/injection": "workspace:^",
-    "@modulon/typeorm": "workspace:^",
+    "@braken/http": "workspace:^",
+    "@braken/injection": "workspace:^",
+    "@braken/typeorm": "workspace:^",
     "koa": "^2.15.0",
     "typeorm": "^0.3.20"
   }

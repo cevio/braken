@@ -1,7 +1,7 @@
 import compose from 'koa-compose';
 import { Middleware } from 'koa';
 import { Server } from 'node:http';
-import { Application } from "@modulon/application";
+import { Application } from "@braken/application";
 
 @Application.Injectable
 export class HttpGlobalMiddlewares extends Application {

@@ -1,4 +1,4 @@
-import { Application, ApplicationConfigs } from '@modulon/application';
+import { Application, ApplicationConfigs } from '@braken/application';
 import { DataSource, DataSourceOptions, QueryRunner } from 'typeorm';
 
 @Application.Injectable

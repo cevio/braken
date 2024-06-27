@@ -38,7 +38,7 @@ importers:
 
   packages/application:
     dependencies:
-      '@modulon/injection':
+      '@braken/injection':
         specifier: workspace:^
         version: link:../injection
     devDependencies:
@@ -48,10 +48,10 @@ importers:
 
   packages/http:
     dependencies:
-      '@modulon/application':
+      '@braken/application':
         specifier: workspace:^
         version: link:../application
-      '@modulon/injection':
+      '@braken/injection':
         specifier: workspace:^
         version: link:../injection
       find-my-way:
@@ -79,13 +79,13 @@ importers:
 
   packages/http-plugin-typeorm:
     dependencies:
-      '@modulon/http':
+      '@braken/http':
         specifier: workspace:^
         version: link:../http
-      '@modulon/injection':
+      '@braken/injection':
         specifier: workspace:^
         version: link:../injection
-      '@modulon/typeorm':
+      '@braken/typeorm':
         specifier: workspace:^
         version: link:../typeorm
       koa:
@@ -110,7 +110,7 @@ importers:
 
   packages/ioredis:
     dependencies:
-      '@modulon/application':
+      '@braken/application':
         specifier: workspace:^
         version: link:../application
       ioredis:
@@ -123,7 +123,7 @@ importers:
 
   packages/typeorm:
     dependencies:
-      '@modulon/application':
+      '@braken/application':
         specifier: workspace:^
         version: link:../application
       typeorm:

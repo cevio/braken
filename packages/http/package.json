@@ -1,5 +1,5 @@
 {
-  "name": "@modulon/http",
+  "name": "@braken/http",
   "version": "1.0.1",
   "description": "somethings",
   "license": "MIT",
@@ -19,8 +19,8 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@modulon/application": "workspace:^",
-    "@modulon/injection": "workspace:^",
+    "@braken/application": "workspace:^",
+    "@braken/injection": "workspace:^",
     "find-my-way": "^8.1.0",
     "glob": "^10.4.2",
     "koa": "^2.15.0",

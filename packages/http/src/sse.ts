@@ -2,7 +2,7 @@ import { Context } from "koa";
 import { Transform, TransformCallback } from 'node:stream';
 import { Controller } from "./controller";
 import { Plugin } from './plugin';
-import { IClass } from "@modulon/injection";
+import { IClass } from "@braken/injection";
 
 /**
  * SSE模块输出

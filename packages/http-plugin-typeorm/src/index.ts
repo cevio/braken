@@ -1,5 +1,5 @@
-import TypeORM from '@modulon/typeorm';
-import { Plugin } from '@modulon/http';
+import TypeORM from '@braken/typeorm';
+import { Plugin } from '@braken/http';
 import { Context, Next } from 'koa';
 import { DataSource, QueryRunner } from 'typeorm';
 

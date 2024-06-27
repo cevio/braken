@@ -1,4 +1,4 @@
-import { Component, IClass, injectable } from "@modulon/injection";
+import { Component, IClass, injectable } from "@braken/injection";
 import { Middleware } from './middleware';
 import { Context, Middleware as KoaMiddleware, Next } from 'koa';
 import { HTTPMethod } from "find-my-way";

@@ -1,4 +1,4 @@
-import { Context, IClass } from "@modulon/injection"
+import { Context, IClass } from "@braken/injection"
 
 export interface HttpProps {
   port: number,

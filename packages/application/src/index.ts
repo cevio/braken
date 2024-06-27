@@ -1,4 +1,4 @@
-import { Component, injectable } from "@modulon/injection";
+import { Component, injectable } from "@braken/injection";
 import { EffectCallback, Terminater } from "./types";
 import { EventEmitter } from 'node:events';
 
