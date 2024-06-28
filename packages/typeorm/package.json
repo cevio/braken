@@ -1,6 +1,6 @@
 {
   "name": "@braken/typeorm",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "somethings",
   "license": "MIT",
   "type": "module",
