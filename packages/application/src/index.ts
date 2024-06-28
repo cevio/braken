@@ -9,6 +9,8 @@ const watches = new Map<Function, Map<string | symbol, Function>>();
 
 export const ApplicationConfigs = new Map();
 export * from './types';
+
+@Component.Injectable
 export abstract class Application extends Component {
   public readonly $event = new EventEmitter();
   public abstract initialize(): Terminater;

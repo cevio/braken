@@ -12,6 +12,7 @@ export const FileRegExpContainer = new Map<Function, [{
   router: string,
 }, PathFunction<any>, MatchFunction<any>]>();
 
+@Component.Injectable
 export abstract class Controller<T extends Context = Context> extends Component {
   public abstract response(ctx: T, next: Next): Promise<void>;
   static readonly Injectable = injectable();

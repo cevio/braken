@@ -5,11 +5,13 @@ import { DataSource, QueryRunner } from 'typeorm';
 
 declare module 'koa' {
   interface BaseContext {
-    $typeorm_connection?: DataSource | QueryRunner,
+    $typeorm_connection?: Connection,
     $typeorm_transacation_rollback?: (roll: () => unknown) => number,
   }
 }
 
+export * from './service';
+export type Connection = DataSource | QueryRunner;
 export default class HttpTypeormPlugin extends Plugin {
   static readonly namespace = Symbol('typeorm:connection');
 
@@ -36,3 +38,4 @@ export default class HttpTypeormPlugin extends Plugin {
     }
   }
 }
+
