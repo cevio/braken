@@ -7,6 +7,11 @@ export const scope = new Context();
 export default (callback: (s: Context) => Promise<unknown>) => {
   scope.use(Logger)
     .then(logger => {
+      process.on('uncaughtException', e => logger.error(e));
+      process.on('unhandledRejection', e => logger.error(e));
+      process.on('uncaughtExceptionMonitor', e => logger.error(e));
+      process.on('error', e => logger.error(e));
+
       callback(scope)
         .then(() => {
           exitHook(exit => {
@@ -14,13 +19,14 @@ export default (callback: (s: Context) => Promise<unknown>) => {
               .catch(e => logger.error(e))
               .finally(exit);
           })
+          logger.silly('Bootstrap done!');
         })
         .catch(e => {
           logger.error(e);
-          return Application.Terminate()
+          Application.Terminate()
+            .catch(e => logger.error(e))
             .finally(() => process.exit(1));
-        })
-        .catch(e => logger.error(e));
+        });
     })
     .catch(e => console.error(e));
 }
