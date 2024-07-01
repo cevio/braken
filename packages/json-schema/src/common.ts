@@ -5,15 +5,17 @@ export class Type<T extends JSONSchemaTypes> {
   private _title: string;
   public _required = false;
   private _deprecated = false;
+  private _ref: string;
 
   constructor(private readonly _type: T) { }
 
   public toJSON(): JSONSchema<T> {
     return {
-      type: this._type,
+      type: this._ref ? undefined : this._type,
       title: this._title,
       description: this._description,
       deprecated: this._deprecated,
+      $ref: this._ref,
     }
   }
 
@@ -34,6 +36,11 @@ export class Type<T extends JSONSchemaTypes> {
 
   public deprecated() {
     this._deprecated = true;
+    return this;
+  }
+
+  public ref(value: string) {
+    this._ref = value;
     return this;
   }
 }

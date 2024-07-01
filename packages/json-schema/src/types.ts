@@ -4,6 +4,7 @@ export interface JSONSchema<T extends JSONSchemaTypes> {
   description?: string,
   title?: string,
   deprecated: boolean,
+  $ref?: string,
 }
 
 export type JSONSchemaTypes = 'object' | 'array' | 'string' | 'number' | 'integer' | 'boolean' | 'null';
