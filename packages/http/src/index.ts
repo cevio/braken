@@ -8,7 +8,7 @@ import { IClass, Context as InjectionContext } from '@braken/injection';
 import { HttpGlobalMiddlewares } from './middlewares';
 import { glob } from 'glob';
 import { resolve } from 'node:path';
-import { Controller, FileRegExpContainer, MethodContainer, MiddlewareContainer } from './controller';
+import { Controller, FileRegExpContainer, MethodContainer, MiddlewareContainer, hasDeprecatedController } from './controller';
 import { Middleware } from './middleware';
 import { compile, match } from 'path-to-regexp';
 import { IPlugin, Plugin } from './plugin';
@@ -27,6 +27,7 @@ export {
   getMetaByController,
   getMethodsByController,
   getMiddlewaresByController,
+  hasDeprecatedController,
   toPath,
   isMatch,
 } from './controller';
@@ -131,13 +132,17 @@ export default class Http extends Application {
       for (let i = 0; i < controllers.length; i++) {
         const controller = controllers[i];
         const rollback = await this.connect(controller, path, options);
-        _controllers.set(controller, rollback);
+        if (rollback) {
+          _controllers.set(controller, rollback);
+        }
       }
     }
     return _controllers;
   }
 
   public async connect<T extends Controller>(controller: IClass<T>, path: string, options: LoadControllerProps = {}) {
+    if (hasDeprecatedController(controller)) return;
+
     const suffix = options.defaultPath || '/index';
     path = path.startsWith('/') ? path : '/' + path;
     if (path.endsWith(suffix)) {

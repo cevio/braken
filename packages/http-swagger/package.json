@@ -1,0 +1,26 @@
+{
+  "name": "@braken/http-swagger",
+  "version": "1.0.0",
+  "description": "somethings",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -d && fix-esm-import-path ./dist"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "fix-esm-import-path": "^1.4.0"
+  },
+  "dependencies": {
+    "@braken/http": "workspace:^",
+    "@braken/injection": "workspace:^",
+    "@braken/json-schema": "workspace:^",
+    "glob": "^10.4.2"
+  }
+}

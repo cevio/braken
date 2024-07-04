@@ -7,6 +7,7 @@ import { PathFunction, MatchFunction } from 'path-to-regexp';
 export const MiddlewareContainer = new Map<Function, (KoaMiddleware | IClass<Middleware>)[]>();
 export const MethodContainer = new Map<Function, Set<HTTPMethod>>();
 export const SSEContainer = new Map<Function, number>();
+export const DeprecatedContainer = new Set<Function>();
 export const FileRegExpContainer = new Map<Function, [{
   path: string,
   router: string,
@@ -49,6 +50,10 @@ export abstract class Controller<T extends Context = Context> extends Component 
       SSEContainer.set(target, timer);
     }
   }
+
+  static readonly Deprecated: ClassDecorator = target => {
+    DeprecatedContainer.add(target);
+  }
 }
 
 export function getMethodsByController<T extends Controller>(clazz: IClass<T>) {
@@ -67,6 +72,10 @@ export function getMetaByController<T extends Controller>(clazz: IClass<T>) {
   if (FileRegExpContainer.has(clazz)) {
     return FileRegExpContainer.get(clazz);
   }
+}
+
+export function hasDeprecatedController<T extends Controller>(clazz: IClass<T>) {
+  return DeprecatedContainer.has(clazz);
 }
 
 export function toPath<T extends Controller>(clazz: IClass<T>, opts: object = {}) {

@@ -8,6 +8,7 @@ import { Object } from './object';
 import { Array } from './array';
 import { Ref } from './ref';
 
+export * from './types';
 export default {
   String: (value?: string) => new String(value),
   Integer: (value?: number) => new Integer(value),
@@ -18,3 +19,4 @@ export default {
   Array: (value: Type<JSONSchemaTypes> | Type<JSONSchemaTypes>[]) => new Array(value),
   Ref: (value: string) => new Ref(value),
 }
+
