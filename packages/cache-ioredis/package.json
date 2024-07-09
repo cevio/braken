@@ -1,6 +1,6 @@
 {
   "name": "@braken/cache-ioredis",
-  "version": "1.0.0",
+  "version": "1.0.12",
   "description": "somethings",
   "license": "MIT",
   "type": "module",
