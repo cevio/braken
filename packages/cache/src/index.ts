@@ -1,6 +1,9 @@
 import { Application, ApplicationConfigs } from '@braken/application';
 import { CacheProps } from './types';
 
+export * from './cache';
+export * from './types';
+
 @Application.Injectable
 export default class CacheServer extends Application {
   static readonly namespace = Symbol('cache');
