@@ -6,8 +6,8 @@ import { CacheResult } from './types';
 const CompileContainer = new Map<Function, PathFunction<object>>();
 
 @Component.Injectable
-export abstract class Cache<T extends object = {}> extends Component {
-  public abstract execute<R = any>(params: T): CacheResult<R> | Promise<CacheResult<R>>;
+export abstract class Cache<R = any, T extends object = object> extends Component {
+  public abstract execute(params: T): CacheResult<R> | Promise<CacheResult<R>>;
 
   @Component.Inject(CacheServer)
   protected readonly $server: CacheServer;
@@ -27,31 +27,29 @@ export abstract class Cache<T extends object = {}> extends Component {
     return target;
   }
 
-  public async $write<R = any>(params?: T) {
+  public async $write(params?: T): Promise<R> {
     const target = this.getConstructor();
     if (!CompileContainer.has(target)) {
       throw new Error('invaild cache target');
     }
     const fn: PathFunction<T> = CompileContainer.get(target);
-    // @ts-ignore
-    const key = fn(params || {});
-    const { value, expire } = await Promise.resolve(this.execute<R>(params));
+    const key = fn(params);
+    const { value, expire } = await Promise.resolve(this.execute(params));
     await this.$server.write(key, value, expire);
     return value;
   }
 
-  public async $read(params?: T) {
+  public async $read(params?: T): Promise<R> {
     const target = this.getConstructor();
     if (!CompileContainer.has(target)) {
       throw new Error('invaild cache target');
     }
     const fn: PathFunction<T> = CompileContainer.get(target);
-    // @ts-ignore
-    const key = fn(params || {});
+    const key = fn(params);
     const index = await this.$server.find(key);
     if (index === -1) return this.$write(params);
     const current = this.$server.get(index);
-    const value = await Promise.resolve(current.read(key));
+    const value = await Promise.resolve(current.read<R>(key));
     const expire = await Promise.resolve(current.expire(key));
     await this.$server.rewrite(key, value, expire, index);
     return value;
@@ -63,8 +61,7 @@ export abstract class Cache<T extends object = {}> extends Component {
       throw new Error('invaild cache target');
     }
     const fn: PathFunction<T> = CompileContainer.get(target);
-    // @ts-ignore
-    const key = fn(params || {});
+    const key = fn(params);
     await Promise.resolve(this.$server.delete(key));
   }
 }
