@@ -48,8 +48,8 @@ export abstract class Cache<R = any, T extends object = object> extends Componen
     const key = fn(params);
     const index = await this.$server.find(key);
     if (index === -1) return this.$write(params);
-    const current = this.$server.get(index);
-    const value = await Promise.resolve(current.read<R>(key));
+    const current = this.$server.get<R>(index);
+    const value = await Promise.resolve(current.read(key));
     const expire = await Promise.resolve(current.expire(key));
     await this.$server.rewrite(key, value, expire, index);
     return value;

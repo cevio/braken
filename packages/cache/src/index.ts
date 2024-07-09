@@ -42,7 +42,7 @@ export default class CacheServer extends Application {
     return index;
   }
 
-  public get(index: number) {
+  public get<T = any>(index: number): CacheProps<T> {
     return this.stacks[index];
   }
 
@@ -57,7 +57,9 @@ export default class CacheServer extends Application {
     let i = this.stacks.length;
     while (i--) {
       const current = this.stacks[i];
-      await Promise.resolve(current.delete(key));
+      if (await Promise.resolve(current.has(key))) {
+        await Promise.resolve(current.delete(key));
+      }
     }
   }
 }

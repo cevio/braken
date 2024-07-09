@@ -84,6 +84,25 @@ importers:
         specifier: ^1.4.0
         version: 1.10.0
 
+  packages/cache-ioredis:
+    dependencies:
+      '@braken/application':
+        specifier: workspace:^
+        version: link:../application
+      '@braken/cache':
+        specifier: workspace:^
+        version: link:../cache
+      '@braken/injection':
+        specifier: workspace:^
+        version: link:../injection
+      '@braken/ioredis':
+        specifier: workspace:^
+        version: link:../ioredis
+    devDependencies:
+      fix-esm-import-path:
+        specifier: ^1.4.0
+        version: 1.10.0
+
   packages/http:
     dependencies:
       '@braken/application':
