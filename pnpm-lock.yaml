@@ -68,6 +68,22 @@ importers:
         specifier: ^1.4.0
         version: 1.10.0
 
+  packages/cache:
+    dependencies:
+      '@braken/application':
+        specifier: workspace:^
+        version: link:../application
+      '@braken/injection':
+        specifier: workspace:^
+        version: link:../injection
+      path-to-regexp:
+        specifier: ^7.0.0
+        version: 7.0.0
+    devDependencies:
+      fix-esm-import-path:
+        specifier: ^1.4.0
+        version: 1.10.0
+
   packages/http:
     dependencies:
       '@braken/application':
