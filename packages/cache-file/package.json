@@ -1,0 +1,28 @@
+{
+  "name": "@braken/cache-file",
+  "version": "1.0.0",
+  "description": "somethings",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -d && fix-esm-import-path ./dist"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "fix-esm-import-path": "^1.4.0"
+  },
+  "dependencies": {
+    "@braken/application": "workspace:^",
+    "@braken/cache": "workspace:^",
+    "@braken/injection": "workspace:^",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.4.2"
+  }
+}
