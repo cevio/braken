@@ -10,7 +10,8 @@
     "init": "pnpm i",
     "watch": "lerna watch -- lerna run build",
     "dev:app": "node --loader ts-node/esm packages/application/src/test.ts",
-    "dev:logger": "node --loader ts-node/esm packages/logger/src/test.ts"
+    "dev:logger": "node --loader ts-node/esm packages/logger/src/test.ts",
+    "dev:websocket": "node --loader ts-node/esm packages/websocket/src/test.ts"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
