@@ -1,11 +1,12 @@
+import fse from 'fs-extra';
 import { CacheProps } from '@braken/cache';
 import { Application, ApplicationConfigs } from '@braken/application';
 import { FileCacheStack } from './types';
-import { ensureDir, writeFile, exists, unlink } from 'fs-extra';
 import { resolve, dirname } from 'node:path';
 import { createRequire } from 'node:module';
 import { glob } from 'glob';
 const require = createRequire(import.meta.url);
+const { ensureDir, writeFile, exists, unlink } = fse;
 
 export * from './types';
 
