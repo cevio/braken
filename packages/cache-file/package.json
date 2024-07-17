@@ -19,10 +19,11 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@braken/application": "workspace:^",
-    "@braken/cache": "workspace:^",
-    "@braken/injection": "workspace:^",
+    "@braken/application": "^1.0.4",
+    "@braken/cache": "^1.0.12",
+    "@braken/injection": "^1.0.2",
     "fs-extra": "^11.2.0",
     "glob": "^10.4.2"
-  }
+  },
+  "gitHead": "6edbc1874a96047922894e34180ec80ed178520b"
 }
