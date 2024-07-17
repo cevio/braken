@@ -25,7 +25,7 @@ importers:
         version: 9.2.23
       lerna:
         specifier: ^7.4.2
-        version: 7.4.2
+        version: 7.4.2(encoding@0.1.13)
       npmlog:
         specifier: ^7.0.1
         version: 7.0.1
@@ -87,14 +87,14 @@ importers:
   packages/cache-file:
     dependencies:
       '@braken/application':
-        specifier: workspace:^
-        version: link:../application
+        specifier: ^1.0.4
+        version: 1.0.4
       '@braken/cache':
-        specifier: workspace:^
-        version: link:../cache
+        specifier: ^1.0.12
+        version: 1.0.12
       '@braken/injection':
-        specifier: workspace:^
-        version: link:../injection
+        specifier: ^1.0.2
+        version: 1.0.2
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
@@ -175,7 +175,7 @@ importers:
         version: 2.15.3
       typeorm:
         specifier: ^0.3.20
-        version: 0.3.20(ts-node@10.9.2)
+        version: 0.3.20(ioredis@5.4.1)(ts-node@10.9.2(@types/node@20.14.8)(typescript@5.5.2))
     devDependencies:
       '@types/koa':
         specifier: ^2.15.0
@@ -257,7 +257,7 @@ importers:
         version: link:../application
       typeorm:
         specifier: ^0.3.20
-        version: 0.3.20(ts-node@10.9.2)
+        version: 0.3.20(ioredis@5.4.1)(ts-node@10.9.2(@types/node@20.14.8)(typescript@5.5.2))
     devDependencies:
       fix-esm-import-path:
         specifier: ^1.4.0
@@ -301,6 +301,15 @@ packages:
   '@babel/highlight@7.24.7':
     resolution: {integrity: sha512-EStJpq4OuY8xYfhGVXngigBJRWxftKX9ksiGDnmlY3o7B/V7KIAc9X4oiK87uPJSc/vs5L869bem5fhZa8caZw==}
     engines: {node: '>=6.9.0'}
+
+  '@braken/application@1.0.4':
+    resolution: {integrity: sha512-wopgebUkiNorLcWasrKcNFHIH/b1qThWuaOXCGI9fop8+ujQK/ANqgK+WExWBKb6Ils3oJxERfb4+xzPboOBVw==}
+
+  '@braken/cache@1.0.12':
+    resolution: {integrity: sha512-jq3fSrk20qI6XkEQwEVgOIymtsA+TjXk5T7+wADtaUlgM/m6DXovjQMncNwD+ZGjQk8WcbNGk3dH7GrGzKEX3Q==}
+
+  '@braken/injection@1.0.2':
+    resolution: {integrity: sha512-0La/TJGCEVwsHtgBvdtHkgVsA/XoUcJpOWJjHeE5skZvP3FxR/t/bf9SBL1c1iSq5RlsKt8wV/IB9e+wTsCgew==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -3011,6 +3020,18 @@ snapshots:
       js-tokens: 4.0.0
       picocolors: 1.0.1
 
+  '@braken/application@1.0.4':
+    dependencies:
+      '@braken/injection': 1.0.2
+
+  '@braken/cache@1.0.12':
+    dependencies:
+      '@braken/application': 1.0.4
+      '@braken/injection': 1.0.2
+      path-to-regexp: 7.0.0
+
+  '@braken/injection@1.0.2': {}
+
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -3051,13 +3072,13 @@ snapshots:
       execa: 5.0.0
       strong-log-transformer: 2.1.0
 
-  '@lerna/create@7.4.2(typescript@5.5.2)':
+  '@lerna/create@7.4.2(encoding@0.1.13)(typescript@5.5.2)':
     dependencies:
       '@lerna/child-process': 7.4.2
       '@npmcli/run-script': 6.0.2
       '@nx/devkit': 16.10.0(nx@16.10.0)
       '@octokit/plugin-enterprise-rest': 6.0.1
-      '@octokit/rest': 19.0.11
+      '@octokit/rest': 19.0.11(encoding@0.1.13)
       byte-size: 8.1.1
       chalk: 4.1.0
       clone-deep: 4.0.1
@@ -3087,7 +3108,7 @@ snapshots:
       make-dir: 4.0.0
       minimatch: 3.0.5
       multimatch: 5.0.0
-      node-fetch: 2.6.7
+      node-fetch: 2.6.7(encoding@0.1.13)
       npm-package-arg: 8.1.1
       npm-packlist: 5.1.1
       npm-registry-fetch: 14.0.5
@@ -3250,11 +3271,11 @@ snapshots:
 
   '@octokit/auth-token@3.0.4': {}
 
-  '@octokit/core@4.2.4':
+  '@octokit/core@4.2.4(encoding@0.1.13)':
     dependencies:
       '@octokit/auth-token': 3.0.4
-      '@octokit/graphql': 5.0.6
-      '@octokit/request': 6.2.8
+      '@octokit/graphql': 5.0.6(encoding@0.1.13)
+      '@octokit/request': 6.2.8(encoding@0.1.13)
       '@octokit/request-error': 3.0.3
       '@octokit/types': 9.3.2
       before-after-hook: 2.2.3
@@ -3268,9 +3289,9 @@ snapshots:
       is-plain-object: 5.0.0
       universal-user-agent: 6.0.1
 
-  '@octokit/graphql@5.0.6':
+  '@octokit/graphql@5.0.6(encoding@0.1.13)':
     dependencies:
-      '@octokit/request': 6.2.8
+      '@octokit/request': 6.2.8(encoding@0.1.13)
       '@octokit/types': 9.3.2
       universal-user-agent: 6.0.1
     transitivePeerDependencies:
@@ -3280,19 +3301,19 @@ snapshots:
 
   '@octokit/plugin-enterprise-rest@6.0.1': {}
 
-  '@octokit/plugin-paginate-rest@6.1.2(@octokit/core@4.2.4)':
+  '@octokit/plugin-paginate-rest@6.1.2(@octokit/core@4.2.4(encoding@0.1.13))':
     dependencies:
-      '@octokit/core': 4.2.4
+      '@octokit/core': 4.2.4(encoding@0.1.13)
       '@octokit/tsconfig': 1.0.2
       '@octokit/types': 9.3.2
 
-  '@octokit/plugin-request-log@1.0.4(@octokit/core@4.2.4)':
+  '@octokit/plugin-request-log@1.0.4(@octokit/core@4.2.4(encoding@0.1.13))':
     dependencies:
-      '@octokit/core': 4.2.4
+      '@octokit/core': 4.2.4(encoding@0.1.13)
 
-  '@octokit/plugin-rest-endpoint-methods@7.2.3(@octokit/core@4.2.4)':
+  '@octokit/plugin-rest-endpoint-methods@7.2.3(@octokit/core@4.2.4(encoding@0.1.13))':
     dependencies:
-      '@octokit/core': 4.2.4
+      '@octokit/core': 4.2.4(encoding@0.1.13)
       '@octokit/types': 10.0.0
 
   '@octokit/request-error@3.0.3':
@@ -3301,23 +3322,23 @@ snapshots:
       deprecation: 2.3.1
       once: 1.4.0
 
-  '@octokit/request@6.2.8':
+  '@octokit/request@6.2.8(encoding@0.1.13)':
     dependencies:
       '@octokit/endpoint': 7.0.6
       '@octokit/request-error': 3.0.3
       '@octokit/types': 9.3.2
       is-plain-object: 5.0.0
-      node-fetch: 2.6.7
+      node-fetch: 2.6.7(encoding@0.1.13)
       universal-user-agent: 6.0.1
     transitivePeerDependencies:
       - encoding
 
-  '@octokit/rest@19.0.11':
+  '@octokit/rest@19.0.11(encoding@0.1.13)':
     dependencies:
-      '@octokit/core': 4.2.4
-      '@octokit/plugin-paginate-rest': 6.1.2(@octokit/core@4.2.4)
-      '@octokit/plugin-request-log': 1.0.4(@octokit/core@4.2.4)
-      '@octokit/plugin-rest-endpoint-methods': 7.2.3(@octokit/core@4.2.4)
+      '@octokit/core': 4.2.4(encoding@0.1.13)
+      '@octokit/plugin-paginate-rest': 6.1.2(@octokit/core@4.2.4(encoding@0.1.13))
+      '@octokit/plugin-request-log': 1.0.4(@octokit/core@4.2.4(encoding@0.1.13))
+      '@octokit/plugin-rest-endpoint-methods': 7.2.3(@octokit/core@4.2.4(encoding@0.1.13))
     transitivePeerDependencies:
       - encoding
 
@@ -3901,6 +3922,7 @@ snapshots:
       js-yaml: 4.1.0
       parse-json: 5.2.0
       path-type: 4.0.0
+    optionalDependencies:
       typescript: 5.5.2
 
   create-require@1.1.1: {}
@@ -4647,14 +4669,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  lerna@7.4.2:
+  lerna@7.4.2(encoding@0.1.13):
     dependencies:
       '@lerna/child-process': 7.4.2
-      '@lerna/create': 7.4.2(typescript@5.5.2)
+      '@lerna/create': 7.4.2(encoding@0.1.13)(typescript@5.5.2)
       '@npmcli/run-script': 6.0.2
       '@nx/devkit': 16.10.0(nx@16.10.0)
       '@octokit/plugin-enterprise-rest': 6.0.1
-      '@octokit/rest': 19.0.11
+      '@octokit/rest': 19.0.11(encoding@0.1.13)
       byte-size: 8.1.1
       chalk: 4.1.0
       clone-deep: 4.0.1
@@ -4690,7 +4712,7 @@ snapshots:
       make-dir: 4.0.0
       minimatch: 3.0.5
       multimatch: 5.0.0
-      node-fetch: 2.6.7
+      node-fetch: 2.6.7(encoding@0.1.13)
       npm-package-arg: 8.1.1
       npm-packlist: 5.1.1
       npm-registry-fetch: 14.0.5
@@ -5006,9 +5028,11 @@ snapshots:
 
   node-addon-api@3.2.1: {}
 
-  node-fetch@2.6.7:
+  node-fetch@2.6.7(encoding@0.1.13):
     dependencies:
       whatwg-url: 5.0.0
+    optionalDependencies:
+      encoding: 0.1.13
 
   node-gyp-build@4.8.1: {}
 
@@ -5830,7 +5854,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.20(ts-node@10.9.2):
+  typeorm@0.3.20(ioredis@5.4.1)(ts-node@10.9.2(@types/node@20.14.8)(typescript@5.5.2)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       app-root-path: 3.1.0
@@ -5844,10 +5868,12 @@ snapshots:
       mkdirp: 2.1.6
       reflect-metadata: 0.2.2
       sha.js: 2.4.11
-      ts-node: 10.9.2(@types/node@20.14.8)(typescript@5.5.2)
       tslib: 2.6.3
       uuid: 9.0.1
       yargs: 17.7.2
+    optionalDependencies:
+      ioredis: 5.4.1
+      ts-node: 10.9.2(@types/node@20.14.8)(typescript@5.5.2)
     transitivePeerDependencies:
       - supports-color
 
