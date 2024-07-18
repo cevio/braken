@@ -87,14 +87,14 @@ importers:
   packages/cache-file:
     dependencies:
       '@braken/application':
-        specifier: ^1.0.4
-        version: 1.0.4
+        specifier: workspace:^
+        version: link:../application
       '@braken/cache':
-        specifier: ^1.0.12
-        version: 1.0.12
+        specifier: workspace:^
+        version: link:../cache
       '@braken/injection':
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: workspace:^
+        version: link:../injection
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
@@ -301,15 +301,6 @@ packages:
   '@babel/highlight@7.24.7':
     resolution: {integrity: sha512-EStJpq4OuY8xYfhGVXngigBJRWxftKX9ksiGDnmlY3o7B/V7KIAc9X4oiK87uPJSc/vs5L869bem5fhZa8caZw==}
     engines: {node: '>=6.9.0'}
-
-  '@braken/application@1.0.4':
-    resolution: {integrity: sha512-wopgebUkiNorLcWasrKcNFHIH/b1qThWuaOXCGI9fop8+ujQK/ANqgK+WExWBKb6Ils3oJxERfb4+xzPboOBVw==}
-
-  '@braken/cache@1.0.12':
-    resolution: {integrity: sha512-jq3fSrk20qI6XkEQwEVgOIymtsA+TjXk5T7+wADtaUlgM/m6DXovjQMncNwD+ZGjQk8WcbNGk3dH7GrGzKEX3Q==}
-
-  '@braken/injection@1.0.2':
-    resolution: {integrity: sha512-0La/TJGCEVwsHtgBvdtHkgVsA/XoUcJpOWJjHeE5skZvP3FxR/t/bf9SBL1c1iSq5RlsKt8wV/IB9e+wTsCgew==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -3019,18 +3010,6 @@ snapshots:
       chalk: 2.4.2
       js-tokens: 4.0.0
       picocolors: 1.0.1
-
-  '@braken/application@1.0.4':
-    dependencies:
-      '@braken/injection': 1.0.2
-
-  '@braken/cache@1.0.12':
-    dependencies:
-      '@braken/application': 1.0.4
-      '@braken/injection': 1.0.2
-      path-to-regexp: 7.0.0
-
-  '@braken/injection@1.0.2': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
