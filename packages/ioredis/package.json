@@ -1,6 +1,6 @@
 {
   "name": "@braken/ioredis",
-  "version": "1.0.4",
+  "version": "1.0.20",
   "description": "somethings",
   "license": "MIT",
   "type": "module",
