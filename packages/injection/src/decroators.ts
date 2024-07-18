@@ -1,4 +1,4 @@
-import { Component } from "./context";
+import { Component } from "./component";
 import { IClass, InjectAcceptType } from "./types";
 
 export const container = new Map<Function, Map<string | symbol, any>>();

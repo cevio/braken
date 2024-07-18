@@ -1,10 +1,10 @@
-import TypeORMPlugin, { Connection } from './index';
+import { Connection, HttpTypeormPlugin } from './plugin';
 import { Component } from '@braken/injection';
 import { EntityTarget } from 'typeorm'
 
 @Component.Injectable
 export class TypeORMService extends Component {
-  @Component.Inject(TypeORMPlugin.namespace)
+  @Component.Inject(HttpTypeormPlugin.namespace)
   public readonly conn: Connection;
 
   public getRepository<T>(target: EntityTarget<T>) {

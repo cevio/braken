@@ -1,4 +1,4 @@
-import CacheServer from './index';
+import { CacheServer } from './app';
 import { Component } from '@braken/injection';
 import { compile, PathFunction } from 'path-to-regexp';
 import { CacheResult } from './types';

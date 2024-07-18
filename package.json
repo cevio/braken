@@ -9,9 +9,7 @@
     "pub": "lerna run build && git add . && git commit -am 'update' && git push && lerna publish",
     "init": "pnpm i",
     "watch": "lerna watch -- lerna run build",
-    "dev:app": "node --loader ts-node/esm packages/application/src/test.ts",
-    "dev:logger": "node --loader ts-node/esm packages/logger/src/test.ts",
-    "dev:websocket": "node --loader ts-node/esm packages/websocket/src/test.ts"
+    "dev": "node --loader ts-node/esm packages/injection/src/test.ts"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
