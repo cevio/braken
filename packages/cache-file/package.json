@@ -1,6 +1,6 @@
 {
   "name": "@braken/cache-file",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "somethings",
   "license": "MIT",
   "type": "module",
@@ -19,9 +19,9 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@braken/application": "^1.0.20",
-    "@braken/cache": "^1.0.20",
-    "@braken/injection": "^1.0.20",
+    "@braken/application": "^1.0.21",
+    "@braken/cache": "^1.0.21",
+    "@braken/injection": "^1.0.21",
     "fs-extra": "^11.2.0",
     "glob": "^10.4.2"
   },
