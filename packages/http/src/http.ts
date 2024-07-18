@@ -66,13 +66,14 @@ export class Http extends Application {
       ctx.$module = new InjectionContext();
       ctx.$module.mergeFrom(this.$ctx);
       ctx.$plugins = [];
-      Object.freeze(ctx.$plugins);
 
       for (let i = 0; i < this.plugins.length; i++) {
         const plugin = new this.plugins[i](ctx);
         ctx.$plugins.push(plugin);
         await Promise.resolve(plugin.onCreate());
       }
+
+      Object.freeze(ctx.$plugins);
 
       await next();
     })
