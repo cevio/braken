@@ -19,12 +19,13 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@braken/application": "workspace:^",
-    "@braken/injection": "workspace:^",
+    "@braken/application": "^1.0.20",
+    "@braken/injection": "^1.0.20",
     "find-my-way": "^8.1.0",
     "glob": "^10.4.2",
     "koa": "^2.15.0",
     "koa-compose": "^4.1.0",
     "path-to-regexp": "^7.0.0"
-  }
+  },
+  "gitHead": "ac6734c2a62e4db692dffdb68ebab42d0da246d8"
 }
