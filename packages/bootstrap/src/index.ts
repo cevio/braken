@@ -4,7 +4,7 @@ import { Context } from '@braken/injection';
 import { Application } from '@braken/application';
 
 export const scope = new Context();
-export default (callback: (s: Context) => Promise<unknown>) => {
+export default (callback: (s: Context, logger: Logger) => Promise<unknown>) => {
   scope.use(Logger)
     .then(logger => {
       process.on('uncaughtException', e => logger.error(e));
@@ -12,7 +12,7 @@ export default (callback: (s: Context) => Promise<unknown>) => {
       process.on('uncaughtExceptionMonitor', e => logger.error(e));
       process.on('error', e => logger.error(e));
 
-      callback(scope)
+      callback(scope, logger)
         .then(() => {
           exitHook(exit => {
             Application.Terminate()
