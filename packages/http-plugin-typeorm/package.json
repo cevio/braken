@@ -1,6 +1,6 @@
 {
   "name": "@braken/http-plugin-typeorm",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "somethings",
   "license": "MIT",
   "type": "module",
@@ -19,9 +19,9 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@braken/http": "^1.0.21",
-    "@braken/injection": "^1.0.20",
-    "@braken/typeorm": "^1.0.20",
+    "@braken/http": "workspace:^",
+    "@braken/injection": "workspace:^",
+    "@braken/typeorm": "workspace:^",
     "koa": "^2.15.0",
     "typeorm": "^0.3.20"
   },
