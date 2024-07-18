@@ -168,15 +168,16 @@ export default class Swagger<G extends Record<string, string> = {}> {
 
       if (!paths[url]) paths[url] = {};
       for (const method of methods.values()) {
-        if (!paths[url][method]) paths[url][method] = {}
-        paths[url][method].deprecated = deprecated;
-        paths[url][method].summary = summary;
-        paths[url][method].description = description;
-        paths[url][method].consumes = consumes;
-        paths[url][method].produces = produces;
-        paths[url][method].responses = responses;
-        paths[url][method].tags = tags;
-        paths[url][method].parameters = parameters;
+        const m = method.toLowerCase();
+        if (!paths[url][m]) paths[url][m] = {}
+        paths[url][m].deprecated = deprecated;
+        paths[url][m].summary = summary;
+        paths[url][m].description = description;
+        paths[url][m].consumes = consumes;
+        paths[url][m].produces = produces;
+        paths[url][m].responses = responses;
+        paths[url][m].tags = tags;
+        paths[url][m].parameters = parameters;
       }
     }
     return {
