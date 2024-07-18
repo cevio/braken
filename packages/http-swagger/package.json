@@ -22,6 +22,5 @@
     "@braken/injection": "workspace:^",
     "@braken/json-schema": "workspace:^",
     "glob": "^10.4.2"
-  },
-  "gitHead": "ac6734c2a62e4db692dffdb68ebab42d0da246d8"
+  }
 }
