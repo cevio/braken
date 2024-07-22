@@ -15,7 +15,13 @@ export class HttpTypeormPlugin extends Plugin {
   static readonly namespace = Symbol('typeorm:connection');
 
   public onCreate() {
-    this.ctx.$module.addHook(HttpTypeormPlugin.namespace, () => this.ctx.$typeorm_connection);
+    this.ctx.$module.addHook(HttpTypeormPlugin.namespace, async () => {
+      if (!this.ctx.$typeorm_connection) {
+        const typeorm = await this.ctx.$module.use(TypeORM);
+        return typeorm.connection;
+      }
+      return this.ctx.$typeorm_connection;
+    });
   }
 
   public onRequest() { }

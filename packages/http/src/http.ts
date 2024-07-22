@@ -175,7 +175,10 @@ export class Http extends Application {
         await Promise.resolve(plugins[i].onRequest(target, controller));
       }
 
-      await target.response(ctx, next);
+      const res = await target.response(ctx, next);
+      if (res !== undefined) {
+        ctx.body = res;
+      }
 
       for (let i = 0; i < plugins.length; i++) {
         await Promise.resolve(plugins[i].onResponse(target, controller));

@@ -15,7 +15,7 @@ export const FileRegExpContainer = new Map<Function, [{
 
 @Component.Injectable
 export abstract class Controller<T extends Context = Context> extends Component {
-  public abstract response(ctx: T, next: Next): Promise<void>;
+  public abstract response(ctx: T, next: Next): Promise<unknown>;
   static readonly Injectable = injectable();
 
   static Middleware(...args: (KoaMiddleware | IClass<Middleware>)[]): ClassDecorator {
