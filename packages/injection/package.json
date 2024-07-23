@@ -1,6 +1,6 @@
 {
   "name": "@braken/injection",
-  "version": "1.0.27",
+  "version": "1.0.28",
   "description": "somethings",
   "license": "MIT",
   "type": "module",
@@ -16,6 +16,5 @@
   },
   "devDependencies": {
     "fix-esm-import-path": "^1.4.0"
-  },
-  "gitHead": "ba07ae261684a8d7f5bab5a8b26987a4faf6b8b9"
+  }
 }
