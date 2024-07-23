@@ -22,20 +22,11 @@ for (const file of Files.values()) {
   const filePath = resolve(file, 'package.json');
   const pkg = require(filePath);
   const deps = pkg.dependencies || {};
-  let i = 0;
   for (const key in deps) {
-    if (Versions.has(key)) {
-      const oldVersion = deps[key];
-      const newVersion = Versions.get(key);
-      if (oldVersion !== newVersion) {
-        deps[key] = newVersion;
-        i++;
-      }
+    if (key.startsWith('@braken/')) {
+      deps[key] = 'workspace:^';
     }
   }
-  if (i > 0) {
-    pkg.dependencies = deps;
-    writeFileSync(filePath, JSON.stringify(pkg, null, 2), 'utf8');
-    console.log('[+]', pkg.name);
-  }
+  if (pkg.gitHead) delete pkg.gitHead;
+  writeFileSync(filePath, JSON.stringify(pkg, null, 2), 'utf8');
 }

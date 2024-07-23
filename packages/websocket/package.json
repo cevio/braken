@@ -18,12 +18,11 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@braken/application": "^1.0.27",
-    "@braken/http": "^1.0.27",
-    "@braken/injection": "^1.0.27",
+    "@braken/application": "workspace:^",
+    "@braken/http": "workspace:^",
+    "@braken/injection": "workspace:^",
     "glob": "^10.4.2",
     "path-to-regexp": "^7.0.0",
     "socket.io": "^4.7.5"
-  },
-  "gitHead": "ba07ae261684a8d7f5bab5a8b26987a4faf6b8b9"
+  }
 }

@@ -19,10 +19,9 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@braken/application": "^1.0.27",
+    "@braken/application": "workspace:^",
     "chalk": "^5.3.0",
     "dayjs": "^1.11.11",
     "proc-log": "^4.2.0"
-  },
-  "gitHead": "ba07ae261684a8d7f5bab5a8b26987a4faf6b8b9"
+  }
 }

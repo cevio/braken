@@ -19,11 +19,10 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@braken/http": "^1.0.27",
-    "@braken/injection": "^1.0.27",
-    "@braken/typeorm": "^1.0.27",
+    "@braken/http": "workspace:^",
+    "@braken/injection": "workspace:^",
+    "@braken/typeorm": "workspace:^",
     "koa": "^2.15.0",
     "typeorm": "^0.3.20"
-  },
-  "gitHead": "ba07ae261684a8d7f5bab5a8b26987a4faf6b8b9"
+  }
 }
