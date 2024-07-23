@@ -69,19 +69,21 @@ export class Context extends Map {
       return new Promise((resolve, reject) => {
         this.load(clazz)
           .then(async ({ callbacks, injections }) => {
+            const init = (target: Component) => {
+              // 循环注入依赖
+              for (let i = 0; i < injections.length; i++) {
+                const { key, value } = injections[i];
+                Object.defineProperty(target, key, {
+                  // 每次都通过 `getter` 拿，保证对象为最新值
+                  // 修改对象方法为改变缓存对象
+                  get: () => this.cache.get(value),
+                })
+              }
+            }
+
             // 实例化
             // @ts-ignore
-            const current = new clazz(this);
-
-            // 循环注入依赖
-            for (let i = 0; i < injections.length; i++) {
-              const { key, value } = injections[i];
-              Object.defineProperty(current, key, {
-                // 每次都通过 `getter` 拿，保证对象为最新值
-                // 修改对象方法为改变缓存对象
-                get: () => this.cache.get(value),
-              })
-            }
+            const current = new clazz(this, init);
 
             // 执行 injectable 方法
             for (let i = 0; i < callbacks.length; i++) {

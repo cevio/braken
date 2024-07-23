@@ -4,8 +4,12 @@ import { EventEmitter } from 'node:events';
 import { Context } from './context';
 
 export class Component extends EventEmitter {
-  constructor(public readonly $ctx: Context) {
+  constructor(
+    public readonly $ctx: Context,
+    callback?: (c: Component) => void
+  ) {
     super();
+    typeof callback === 'function' && callback(this);
   }
 
   static readonly Injectable = injectable();
