@@ -18,7 +18,8 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@braken/application": "workspace:^",
+    "@braken/application": "^1.0.27",
     "typeorm": "^0.3.20"
-  }
+  },
+  "gitHead": "ba07ae261684a8d7f5bab5a8b26987a4faf6b8b9"
 }

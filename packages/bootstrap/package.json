@@ -18,10 +18,11 @@
     "fix-esm-import-path": "^1.4.0"
   },
   "dependencies": {
-    "@braken/application": "workspace:^",
-    "@braken/injection": "workspace:^",
-    "@braken/logger": "workspace:^",
+    "@braken/application": "^1.0.27",
+    "@braken/injection": "^1.0.27",
+    "@braken/logger": "^1.0.27",
     "@types/async-exit-hook": "^2.0.2",
     "async-exit-hook": "^2.0.1"
-  }
+  },
+  "gitHead": "ba07ae261684a8d7f5bab5a8b26987a4faf6b8b9"
 }
