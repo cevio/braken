@@ -61,6 +61,26 @@ export class CacheServer extends Application {
     }
   }
 
+  public async remove(key: string) {
+    const index = await this.find(key);
+    if (index > -1) {
+      const current = this.get(index);
+      if (await current.has(key)) {
+        return await current.delete(key);
+      }
+    }
+  }
+
+  public async expire(key: string) {
+    const index = await this.find(key);
+    if (index > -1) {
+      const current = this.get(index);
+      if (await current.has(key)) {
+        return await current.expire(key);
+      }
+    }
+  }
+
   public async rewrite(key: string, value: any, expire: number, i: number) {
     while (i--) {
       const current = this.stacks[i];
