@@ -43,6 +43,24 @@ export class CacheServer extends Application {
     return this.stacks[index];
   }
 
+  public async read(key: string) {
+    const index = await this.find(key);
+    if (index > -1) {
+      const current = this.get(index);
+      if (await current.has(key)) {
+        return await current.read(key);
+      }
+    }
+  }
+
+  public async has(key: string) {
+    const index = await this.find(key);
+    if (index > -1) {
+      const current = this.get(index);
+      return await current.has(key);
+    }
+  }
+
   public async rewrite(key: string, value: any, expire: number, i: number) {
     while (i--) {
       const current = this.stacks[i];
