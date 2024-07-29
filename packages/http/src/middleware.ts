@@ -1,7 +1,7 @@
 import { Component, IClass, injectable } from "@braken/injection";
 import { Context, Next, Middleware as KoaMiddleware } from 'koa';
 
-export const MiddlewareDependencies = new Map<Function, Set<IClass<Middleware>>>();
+export const MiddlewareDependencies = new Map<Function, Set<KoaMiddleware | IClass<Middleware>>>();
 
 @Component.Injectable
 export abstract class Middleware<T extends Context = Context> extends Component {
@@ -9,7 +9,7 @@ export abstract class Middleware<T extends Context = Context> extends Component 
   static readonly Injectable = injectable();
   static readonly isMiddleware = true;
 
-  static Dependencies(...args: (IClass<Middleware>)[]): ClassDecorator {
+  static Dependencies(...args: (KoaMiddleware | IClass<Middleware>)[]): ClassDecorator {
     return target => {
       if (!MiddlewareDependencies.has(target)) {
         MiddlewareDependencies.set(target, new Set())

@@ -17,7 +17,6 @@ declare module 'koa' {
   interface BaseContext {
     $module: InjectionContext,
     $plugins: Plugin[],
-    $middlewares: Set<any>,
   }
 }
 
@@ -67,7 +66,6 @@ export class Http extends Application {
       ctx.$module = new InjectionContext();
       ctx.$module.mergeFrom(this.$ctx);
       ctx.$plugins = [];
-      ctx.$middlewares = new Set();
 
       for (let i = 0; i < this.plugins.length; i++) {
         const plugin = new this.plugins[i](ctx);
@@ -202,31 +200,30 @@ export class Http extends Application {
 
   private transformMiddlewares(args: (KoaMiddleware | IClass<Middleware>)[]) {
     const pool: KoaMiddleware[] = [];
+
     for (let i = 0; i < args.length; i++) {
       const current = args[i];
       // @ts-ignore
       if (current.isMiddleware) {
-        pool.push(async (ctx, next) => {
-          const dependencies = MiddlewareDependencies.has(current)
+        const dependencies: Set<KoaMiddleware | IClass<Middleware>> =
+          MiddlewareDependencies.has(current)
             ? MiddlewareDependencies.get(current)
             : new Set();
 
-          if (dependencies.size) {
-            for (const middleware of dependencies.values()) {
-              if (!ctx.$middlewares.has(middleware)) {
-                throw new Error('some dependency missing when middleware invoking');
-              }
-            }
-          }
+        if (dependencies.size) {
+          const res = this.transformMiddlewares(Array.from(dependencies.values()));
+          pool.push(...res);
+        }
 
+        pool.push(async (ctx, next) => {
           const target = await ctx.$module.use(current as IClass<Middleware>);
-          ctx.$middlewares.add(current);
           await target.use(ctx, next);
         })
       } else {
         pool.push(current as KoaMiddleware);
       }
     }
+
     return pool;
   }
 }
