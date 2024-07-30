@@ -20,7 +20,7 @@ export abstract class Cache<R = any, T extends object = object> extends Componen
   }
 
   private getConstructor() {
-    const target = Object.getPrototypeOf(this);
+    const target = Object.getPrototypeOf(this).constructor;
     if (!CompileContainer.has(target)) {
       throw new Error('Missing `Cache.Path()`');
     }
