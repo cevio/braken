@@ -16,6 +16,11 @@ export class Integer extends Type<'integer'> {
     return this;
   }
 
+  public enum(...args: number[]) {
+    this._enum = args;
+    return this;
+  }
+
   public multipleOf(i: number) {
     this._multipleOf = i;
     return this;
@@ -41,6 +46,11 @@ export class Number extends Type<'number'> {
   private _enum: number[] = [];
   constructor(public readonly defaultValue?: number) {
     super('number');
+  }
+
+  public enum(...args: number[]) {
+    this._enum = args;
+    return this;
   }
 
   public range(min: number, max: number, exclusiveMaximum?: number | boolean) {
