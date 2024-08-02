@@ -10,6 +10,7 @@ const watches = new Map<Function, Map<string | symbol, Function>>();
 export const ApplicationConfigs = new Map();
 export * from './types';
 
+// 用来保证已被初始化
 const initialized = new Set<Application>();
 
 @Component.Injectable
