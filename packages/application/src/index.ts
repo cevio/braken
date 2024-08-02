@@ -10,6 +10,8 @@ const watches = new Map<Function, Map<string | symbol, Function>>();
 export const ApplicationConfigs = new Map();
 export * from './types';
 
+const initialized = new Set<Application>();
+
 @Component.Injectable
 export abstract class Application extends Component {
   public readonly $event = new EventEmitter();
@@ -28,6 +30,7 @@ export abstract class Application extends Component {
 
   static readonly Injectable = injectable(async (component: Application, clazz) => {
     if (typeof component.initialize === 'function') {
+      if (initialized.has(component)) return;
       if (events.has(clazz)) {
         const map = events.get(clazz);
         for (const [key, value] of map.entries()) {
@@ -62,6 +65,7 @@ export abstract class Application extends Component {
         }
       }
       const terminate = await Promise.resolve(component.initialize());
+      initialized.add(component);
       if (typeof terminate === 'function') {
         component.$terminate = async () => {
           component.$event.removeAllListeners();
@@ -71,6 +75,7 @@ export abstract class Application extends Component {
           if (component.$ctx.hasCache(clazz)) {
             component.$ctx.delCache(clazz);
           }
+          initialized.delete(component);
         }
         // 冻结 防修改
         Object.freeze(component.$terminate);
