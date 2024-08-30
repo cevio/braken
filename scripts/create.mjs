@@ -35,7 +35,7 @@ if (!directories) {
 
   logger.info('-', 'installing ...');
   const error = await new Promise((resolve) => {
-    const ls = spawn('pnpm', ['i'], {
+    const ls = spawn('pnpm', ['i', '--registry=https://registry.npmmirror.com/'], {
       cwd: process.cwd(),
       env: process.env,
     })

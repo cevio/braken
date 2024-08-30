@@ -1,0 +1,30 @@
+{
+  "name": "@braken/react",
+  "version": "1.0.0",
+  "description": "somethings",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -d && fix-esm-import-path ./dist"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "mitt": "^3.0.1",
+    "path-to-regexp": "^7.0.0",
+    "qs": "^6.13.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/qs": "^6.9.15",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "fix-esm-import-path": "^1.4.0"
+  }
+}

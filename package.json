@@ -13,13 +13,13 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.16.2",
     "@types/npmlog": "^4.1.6",
     "fs-extra": "^11.2.0",
-    "inquirer": "^9.2.23",
+    "inquirer": "^9.3.6",
     "lerna": "^7.4.2",
     "npmlog": "^7.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.4"
   }
 }
