@@ -27,13 +27,21 @@ export abstract class Cache<R = any, T extends object = object> extends Componen
     return target;
   }
 
+  private transformPathParams(obj: T) {
+    const o: Partial<Record<keyof T, string>> = {}
+    for (const key in obj) {
+      o[key] = obj[key] + '';
+    }
+    return o as T;
+  }
+
   public async $write(params?: T): Promise<R> {
     const target = this.getConstructor();
     if (!CompileContainer.has(target)) {
       throw new Error('invaild cache target');
     }
     const fn: PathFunction<T> = CompileContainer.get(target);
-    const key = fn(params);
+    const key = fn(this.transformPathParams(params));
     const { value, expire } = await Promise.resolve(this.execute(params));
     await this.$server.write(key, value, expire);
     return value;
@@ -45,7 +53,7 @@ export abstract class Cache<R = any, T extends object = object> extends Componen
       throw new Error('invaild cache target');
     }
     const fn: PathFunction<T> = CompileContainer.get(target);
-    const key = fn(params);
+    const key = fn(this.transformPathParams(params));
     const index = await this.$server.find(key);
     if (index === -1) return this.$write(params);
     const current = this.$server.get<R>(index);
@@ -61,7 +69,7 @@ export abstract class Cache<R = any, T extends object = object> extends Componen
       throw new Error('invaild cache target');
     }
     const fn: PathFunction<T> = CompileContainer.get(target);
-    const key = fn(params);
+    const key = fn(this.transformPathParams(params));
     await Promise.resolve(this.$server.delete(key));
   }
 }
