@@ -6,7 +6,7 @@
   "scripts": {
     "versions": "node ./scripts/versions.mjs",
     "create": "node scripts/create.mjs -trace-warnings",
-    "pub": "lerna run build && git add . && git commit -am 'update' && git push && lerna publish",
+    "pub": "lerna run build && git add . && git commit -am 'update' && git push && lerna publish --registry=https://registry.npmmirror.com/",
     "init": "pnpm i",
     "watch": "lerna watch -- lerna run build",
     "dev": "node --loader ts-node/esm packages/injection/src/test.ts"
