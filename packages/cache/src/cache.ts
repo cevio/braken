@@ -27,7 +27,7 @@ export abstract class Cache<R = any, T extends object = object> extends Componen
     return target;
   }
 
-  private transformPathParams(obj: T) {
+  private transformPathParams(obj: T): T {
     const o: Partial<Record<keyof T, string>> = {}
     for (const key in obj) {
       o[key] = obj[key] + '';
