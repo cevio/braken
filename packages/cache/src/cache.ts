@@ -9,6 +9,8 @@ const CompileContainer = new Map<Function, PathFunction<object>>();
 export abstract class Cache<R = any, T extends object = object> extends Component {
   public abstract execute(params: T): CacheResult<R> | Promise<CacheResult<R>>;
 
+  private readonly ErrorExpire = 30 * 60;
+
   @Component.Inject(CacheServer)
   protected readonly $server: CacheServer;
 
@@ -42,9 +44,16 @@ export abstract class Cache<R = any, T extends object = object> extends Componen
     }
     const fn: PathFunction<T> = CompileContainer.get(target);
     const key = fn(this.transformPathParams(params));
-    const { value, expire } = await Promise.resolve(this.execute(params));
-    await this.$server.write(key, value, expire);
-    return value;
+    try {
+      const { value, expire } = await Promise.resolve(this.execute(params));
+      await this.$server.write(key, value, expire);
+      return value;
+    } catch (e) {
+      await this.$server.write(key, {
+        $__error__$: e.message,
+      }, this.ErrorExpire);
+      throw e;
+    }
   }
 
   public async $read(params?: T): Promise<R> {
@@ -58,6 +67,11 @@ export abstract class Cache<R = any, T extends object = object> extends Componen
     if (index === -1) return this.$write(params);
     const current = this.$server.get<R>(index);
     const value = await Promise.resolve(current.read(key));
+    // @ts-ignore
+    if (value?.$__error__$) {
+      // @ts-ignore
+      throw new Error(value.$__error__$);
+    }
     const expire = await Promise.resolve(current.expire(key));
     await this.$server.rewrite(key, value, expire, index);
     return value;
