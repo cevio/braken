@@ -1,10 +1,12 @@
 import { Component } from "./component";
+// import { Context } from "./context";
 import { IClass, InjectAcceptType } from "./types";
 
 export const container = new Map<Function, Map<string | symbol, any>>();
 export const NS = {
   INJECTABLE: Symbol('injectable'),
   INJECT: Symbol('inject'),
+  // SCOPE: Symbol('scope'),
 }
 
 export const injectable = <T extends Component>(
@@ -32,3 +34,12 @@ export const inject = (clazz: InjectAcceptType): PropertyDecorator =>
     const injections = meta.get(NS.INJECT) as Map<string | symbol, InjectAcceptType>;
     injections.set(property, clazz);
   }
+
+// export function Scope<T extends Context>(ctx: T): ClassDecorator {
+//   return target => {
+//     if (!container.has(target)) {
+//       container.set(target, new Map());
+//     }
+//     container.get(target).set(NS.SCOPE, ctx);
+//   }
+// }

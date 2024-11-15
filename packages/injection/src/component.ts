@@ -14,6 +14,7 @@ export class Component extends EventEmitter {
 
   static readonly Injectable = injectable();
   static readonly Inject = inject;
+  // static readonly Scope = Scope;
 
   public $use<R extends Component, T extends InjectAcceptType<R>>(clazz: T) {
     return this.$ctx.use<R, T>(clazz);

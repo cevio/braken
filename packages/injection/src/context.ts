@@ -7,6 +7,13 @@ export class Context extends Map {
   private readonly pending = new Map<InjectAcceptType, Array<[(value: unknown) => void, (reason?: any) => void]>>();
   private readonly hooks = new Map<string | symbol, IHookCallback>();
 
+  private _parent: Context = null;
+
+  public setParent(c: Context) {
+    this._parent = c;
+    return this;
+  }
+
   public hook(key: string | symbol, callback: IHookCallback) {
     this.hooks.set(key, callback);
     return this;
@@ -28,10 +35,23 @@ export class Context extends Map {
     }
   }
 
-  public use<R extends Component, T extends InjectAcceptType<R>>(clazz: T): Promise<T extends IClass<infer U> ? U : R> {
+  private useMemo<R extends Component, T extends InjectAcceptType<R>>(clazz: T): T extends IClass<infer U> ? U : R {
     if (this.cache.has(clazz)) {
       return this.cache.get(clazz);
     }
+    let current: Context = this;
+    while (current._parent) {
+      if (current._parent.hasCache(clazz)) {
+        return current._parent.getCache(clazz)
+      } else {
+        current = current._parent;
+      }
+    }
+  }
+
+  public use<R extends Component, T extends InjectAcceptType<R>>(clazz: T): Promise<T extends IClass<infer U> ? U : R> {
+    const memo = this.useMemo<R, T>(clazz);
+    if (memo) return Promise.resolve(memo);
     if (typeof clazz !== 'function') {
       if (!this.hooks.has(clazz)) {
         throw new Error('Invalid hook name `' + clazz.toString() + '`, you should provide it as a hook first.')
@@ -154,21 +174,13 @@ export class Context extends Map {
     return properties;
   }
 
-  public eachCache(callback: (value: any, key?: InjectAcceptType) => unknown) {
-    for (const [key, value] of this.cache.entries()) {
-      callback(value, key);
-    }
-  }
-
-  public eachHook(callback: (value: (ctx: this) => any | Promise<any>, key?: string | symbol) => unknown) {
-    for (const [key, value] of this.hooks.entries()) {
-      callback(value, key);
-    }
-  }
-
   public addCache(key: InjectAcceptType, value: any) {
     this.cache.set(key, value);
     return this;
+  }
+
+  public getCache(key: InjectAcceptType) {
+    return this.cache.get(key);
   }
 
   public hasCache(key: InjectAcceptType) {
@@ -193,28 +205,12 @@ export class Context extends Map {
   }
 
   public mergeTo(ctx: Context) {
-    this.eachCache((value, key) => {
-      if (!ctx.hasCache(key)) {
-        ctx.addCache(key, value);
-      }
-    })
-    this.eachHook((value, key) => {
-      if (!ctx.hasHook(key)) {
-        ctx.addHook(key, value);
-      }
-    })
+    ctx.setParent(this);
+    return ctx;
   }
 
   public mergeFrom(ctx: Context) {
-    ctx.eachCache((value, key) => {
-      if (!this.hasCache(key)) {
-        this.addCache(key, value);
-      }
-    })
-    ctx.eachHook((value, key) => {
-      if (!this.hasHook(key)) {
-        this.addHook(key, value);
-      }
-    })
+    this.setParent(ctx);
+    return ctx;
   }
 }
