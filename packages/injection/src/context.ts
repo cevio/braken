@@ -96,7 +96,7 @@ export class Context extends Map {
                 Object.defineProperty(target, key, {
                   // 每次都通过 `getter` 拿，保证对象为最新值
                   // 修改对象方法为改变缓存对象
-                  get: () => this.cache.get(value),
+                  get: () => this.useMemo(value),
                 })
               }
             }
