@@ -3,6 +3,8 @@ import Logger from '@braken/logger';
 import { Context } from '@braken/injection';
 import { Application } from '@braken/application';
 
+export * from './load';
+
 export const scope = new Context();
 export default (callback: (s: Context, logger: Logger) => Promise<unknown>) => {
   scope.use(Logger)

@@ -22,6 +22,7 @@
     "@braken/injection": "workspace:^",
     "@braken/logger": "workspace:^",
     "@types/async-exit-hook": "^2.0.2",
-    "async-exit-hook": "^2.0.1"
+    "async-exit-hook": "^2.0.1",
+    "glob": "^10.4.2"
   }
 }
