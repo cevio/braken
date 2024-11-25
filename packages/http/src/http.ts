@@ -73,7 +73,7 @@ export class Http extends Application {
         await Promise.resolve(plugin.onCreate());
       }
 
-      Object.freeze(ctx.$plugins);
+      // Object.freeze(ctx.$plugins);
 
       await next();
     })
