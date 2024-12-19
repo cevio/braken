@@ -26,5 +26,6 @@
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "fix-esm-import-path": "^1.4.0"
-  }
+  },
+  "gitHead": "24503a3789912b4bedd18099b8f6309cffc686f3"
 }
