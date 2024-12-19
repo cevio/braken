@@ -12,7 +12,13 @@ interface ResponseProps<T> {
 const init_headers = {}
 
 export class Request {
+  private customResponse: (data: any) => any;
   constructor(private readonly app: Application) { }
+
+  public useCustomResponse<T = any>(callback: (data: T) => any) {
+    this.customResponse = callback;
+    return this;
+  }
 
   private async createResponse<T>(res: Response): Promise<RequestQueryProps<T>> {
     if (res.status < 200 || res.status >= 300) {
@@ -20,7 +26,17 @@ export class Request {
       throw new Exception(res.status, res.statusText)
     }
 
-    const result: ResponseProps<T> = await res.json();
+    const response = await res.json();
+
+    if (typeof this.customResponse === 'function') {
+      const data = this.customResponse(response);
+      return {
+        data,
+        headers: res.headers,
+      }
+    }
+
+    const result: ResponseProps<T> = response;
 
     if (result.status < 200 || result.status >= 300) {
       this.app.exceptable(new Exception(result.status, result.message));
