@@ -44,5 +44,6 @@ export function defineController<
   Q extends string = any
 >(...middlewares: Middleware<P, Q>[]): Controller<P, Q> {
   const controller = new Controller<P, Q>(middlewares);
+
   return controller;
 }
