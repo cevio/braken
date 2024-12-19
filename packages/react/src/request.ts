@@ -30,6 +30,7 @@ export class Request {
 
     if (typeof this.customResponse === 'function') {
       const data = this.customResponse(response);
+
       return {
         data,
         headers: res.headers,
