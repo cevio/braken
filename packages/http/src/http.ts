@@ -174,7 +174,8 @@ export class Http extends Application {
       const plugins = ctx.$plugins;
 
       if (parameters) {
-        const { query, path, body } = parameters;
+        const { query, path, body, head } = parameters;
+        await this.transformParameter(target, ctx, head);
         await this.transformParameter(target, ctx, query);
         await this.transformParameter(target, ctx, path);
         await this.transformParameter(target, ctx, body);

@@ -16,6 +16,7 @@ export const FileRegExpContainer = new Map<Function, [{
 }, PathFunction<any>, MatchFunction<any>]>();
 
 export const ParametersContainer = new Map<Function, {
+  head: IParameterMap,
   query: IParameterMap,
   path: IParameterMap,
   body: IParameterMap,
@@ -63,23 +64,27 @@ export abstract class Controller<T extends Context = Context> extends Component 
     DeprecatedContainer.add(target);
   }
 
-  static Parameter(pos: 'query' | 'path' | 'body', ...args: (((v: any) => any) | string)[]): PropertyDecorator {
+  static Parameter(pos: 'query' | 'path' | 'body' | 'head', ...args: (((v: any) => any) | string)[]): PropertyDecorator {
     return (target, property) => {
       const controller = target.constructor;
       if (!ParametersContainer.has(controller)) {
         ParametersContainer.set(controller, {
+          head: new Map(),
           query: new Map(),
           path: new Map(),
           body: new Map(),
         })
       }
-      const { query, path, body } = ParametersContainer.get(controller);
+      const { query, path, body, head } = ParametersContainer.get(controller);
       switch (pos) {
+        case 'head':
+          head.set(property, (ctx: Context, controller) => transformValue(controller, ctx.headers[property as string], args));
+          break;
         case 'query':
-          query.set(property, (ctx: Context, controller) => transformValue(controller, ctx.query[property as string] as string, args));
+          query.set(property, (ctx: Context, controller) => transformValue(controller, ctx.query[property as string], args));
           break;
         case 'path':
-          path.set(property, async (ctx: Context, controller) => transformValue(controller, ctx.params[property as string] as string, args));
+          path.set(property, async (ctx: Context, controller) => transformValue(controller, ctx.params[property as string], args));
           break;
         case 'body':
           // @ts-ignore
