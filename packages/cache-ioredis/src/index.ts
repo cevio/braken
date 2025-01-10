@@ -5,7 +5,7 @@ import { formatPathKey } from './utils';
 
 @Application.Injectable
 export default class IORedisCache extends Application implements CacheProps {
-  private prefix: string;
+  public prefix: string;
   static readonly namespace = Symbol('prefix');
   static prefix(value: string) {
     ApplicationConfigs.set(IORedisCache.namespace, value);
