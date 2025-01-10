@@ -4,7 +4,7 @@ import { Context, Middleware as KoaMiddleware, Next } from 'koa';
 import { HTTPMethod } from "find-my-way";
 import { PathFunction, MatchFunction } from 'path-to-regexp';
 
-export type IParameterMap = Map<string | symbol, (ctx: Context) => Promise<any>>;
+export type IParameterMap<T extends Controller = Controller> = Map<string | symbol, (ctx: Context, c: T) => Promise<any>>;
 
 export const MiddlewareContainer = new Map<Function, (KoaMiddleware | IClass<Middleware>)[]>();
 export const MethodContainer = new Map<Function, Set<HTTPMethod>>();
@@ -76,21 +76,21 @@ export abstract class Controller<T extends Context = Context> extends Component 
       const { query, path, body } = ParametersContainer.get(controller);
       switch (pos) {
         case 'query':
-          query.set(property, (ctx: Context) => transformValue(target, ctx.query[property as string] as string, args));
+          query.set(property, (ctx: Context, controller) => transformValue(controller, ctx.query[property as string] as string, args));
           break;
         case 'path':
-          path.set(property, async (ctx: Context) => transformValue(target, ctx.params[property as string] as string, args));
+          path.set(property, async (ctx: Context, controller) => transformValue(controller, ctx.params[property as string] as string, args));
           break;
         case 'body':
           // @ts-ignore
-          body.set(property, async (ctx: Context) => transformValue(target, ctx.request.body, args));
+          body.set(property, async (ctx: Context, controller) => transformValue(controller, ctx.request.body, args));
           break;
       }
     }
   }
 }
 
-async function transformValue(target: Object, val: any, args: (((v: string) => any) | string)[]) {
+async function transformValue<T extends Controller>(target: T, val: any, args: (((v: string) => any) | string)[]) {
   let value = val;
   for (let i = 0; i < args.length; i++) {
     const fn = args[i];

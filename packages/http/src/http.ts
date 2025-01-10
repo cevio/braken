@@ -201,7 +201,7 @@ export class Http extends Application {
 
   private async transformParameter<T extends Controller>(controller: T, ctx: Context, map: IParameterMap) {
     for (const [key, fn] of map.entries()) {
-      const value = await fn(ctx);
+      const value = await fn(ctx, controller);
       // @ts-ignore
       controller[key] = value;
     }
