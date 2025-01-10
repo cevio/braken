@@ -8,7 +8,7 @@ import { IClass, Context as InjectionContext } from '@braken/injection';
 import { HttpGlobalMiddlewares } from './middlewares';
 import { glob } from 'glob';
 import { resolve } from 'node:path';
-import { Controller, FileRegExpContainer, MethodContainer, MiddlewareContainer, hasDeprecatedController } from './controller';
+import { Controller, FileRegExpContainer, IParameterMap, MethodContainer, MiddlewareContainer, getParametersByController, hasDeprecatedController } from './controller';
 import { Middleware, MiddlewareDependencies } from './middleware';
 import { compile, match } from 'path-to-regexp';
 import { IPlugin, Plugin } from './plugin';
@@ -143,6 +143,8 @@ export class Http extends Application {
       ? options.transformPhysicalPathToRoutingPath(physicalPath)
       : physicalPath.replace(/\[([^\]]+)\]/g, ':$1');
 
+    const parameters = getParametersByController(controller);
+
     const methods = MethodContainer.has(controller)
       ? Array.from(MethodContainer.get(controller).values())
       : [];
@@ -171,6 +173,13 @@ export class Http extends Application {
       const target = await ctx.$module.use(controller);
       const plugins = ctx.$plugins;
 
+      if (parameters) {
+        const { query, path, body } = parameters;
+        await this.transformParameter(target, ctx, query);
+        await this.transformParameter(target, ctx, path);
+        await this.transformParameter(target, ctx, body);
+      }
+
       for (let i = 0; i < plugins.length; i++) {
         await Promise.resolve(plugins[i].onRequest(target, controller));
       }
@@ -188,6 +197,14 @@ export class Http extends Application {
     this.offlines.set(controller, offline);
 
     return offline;
+  }
+
+  private async transformParameter<T extends Controller>(controller: T, ctx: Context, map: IParameterMap) {
+    for (const [key, fn] of map.entries()) {
+      const value = await fn(ctx);
+      // @ts-ignore
+      controller[key] = value;
+    }
   }
 
   public disconnect(controller: IClass) {

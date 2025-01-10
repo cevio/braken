@@ -4,6 +4,8 @@ import { Context, Middleware as KoaMiddleware, Next } from 'koa';
 import { HTTPMethod } from "find-my-way";
 import { PathFunction, MatchFunction } from 'path-to-regexp';
 
+export type IParameterMap = Map<string | symbol, (ctx: Context) => Promise<any>>;
+
 export const MiddlewareContainer = new Map<Function, (KoaMiddleware | IClass<Middleware>)[]>();
 export const MethodContainer = new Map<Function, Set<HTTPMethod>>();
 export const SSEContainer = new Map<Function, number>();
@@ -12,6 +14,12 @@ export const FileRegExpContainer = new Map<Function, [{
   path: string,
   router: string,
 }, PathFunction<any>, MatchFunction<any>]>();
+
+export const ParametersContainer = new Map<Function, {
+  query: IParameterMap,
+  path: IParameterMap,
+  body: IParameterMap,
+}>();
 
 @Component.Injectable
 export abstract class Controller<T extends Context = Context> extends Component {
@@ -53,6 +61,52 @@ export abstract class Controller<T extends Context = Context> extends Component 
 
   static readonly Deprecated: ClassDecorator = target => {
     DeprecatedContainer.add(target);
+  }
+
+  static Parameter(pos: 'query' | 'path' | 'body', ...args: (((v: string) => any) | string)[]): PropertyDecorator {
+    return (target, property) => {
+      const controller = target.constructor;
+      if (!ParametersContainer.has(controller)) {
+        ParametersContainer.set(controller, {
+          query: new Map(),
+          path: new Map(),
+          body: new Map(),
+        })
+      }
+      const { query, path, body } = ParametersContainer.get(controller);
+      switch (pos) {
+        case 'query':
+          query.set(property, (ctx: Context) => transformValue(target, ctx.query[property as string] as string, args));
+          break;
+        case 'path':
+          path.set(property, async (ctx: Context) => transformValue(target, ctx.params[property as string] as string, args));
+          break;
+        case 'body':
+          // @ts-ignore
+          body.set(property, async (ctx: Context) => transformValue(target, ctx.request.body, args));
+          break;
+      }
+    }
+  }
+}
+
+async function transformValue(target: Object, val: any, args: (((v: string) => any) | string)[]) {
+  let value = val;
+  for (let i = 0; i < args.length; i++) {
+    const fn = args[i];
+    if (typeof fn === 'function') {
+      value = await Promise.resolve(fn(value));
+    } else if (typeof fn === 'string') {
+      // @ts-ignore
+      value = await Promise.resolve(target[fn](value));
+    }
+  }
+  return value;
+}
+
+export function getParametersByController<T extends Controller>(clazz: IClass<T>) {
+  if (ParametersContainer.has(clazz)) {
+    return ParametersContainer.get(clazz);
   }
 }
 
