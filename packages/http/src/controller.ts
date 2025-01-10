@@ -63,7 +63,7 @@ export abstract class Controller<T extends Context = Context> extends Component 
     DeprecatedContainer.add(target);
   }
 
-  static Parameter(pos: 'query' | 'path' | 'body', ...args: (((v: string) => any) | string)[]): PropertyDecorator {
+  static Parameter(pos: 'query' | 'path' | 'body', ...args: (((v: any) => any) | string)[]): PropertyDecorator {
     return (target, property) => {
       const controller = target.constructor;
       if (!ParametersContainer.has(controller)) {
