@@ -111,6 +111,7 @@ function transformParameter(
         body: new Map(),
       })
     }
+
     const { query, path, body, head } = ParametersContainer.get(controller);
     switch (pos) {
       case 'head':
