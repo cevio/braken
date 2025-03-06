@@ -4,6 +4,8 @@ import { Context, Middleware as KoaMiddleware, Next } from 'koa';
 import { HTTPMethod } from "find-my-way";
 import { PathFunction, MatchFunction } from 'path-to-regexp';
 
+export type HttpControllerParameterTypes = 'query' | 'path' | 'body' | 'head';
+export type HttpControllerParameterFilter = ((v: any) => any) | string | symbol;
 export type IParameterMap<T extends Controller = Controller> = Map<string | symbol, (ctx: Context, c: T) => Promise<any>>;
 
 export const MiddlewareContainer = new Map<Function, (KoaMiddleware | IClass<Middleware>)[]>();
@@ -64,38 +66,71 @@ export abstract class Controller<T extends Context = Context> extends Component 
     DeprecatedContainer.add(target);
   }
 
-  static Parameter(pos: 'query' | 'path' | 'body' | 'head', ...args: (((v: any) => any) | string)[]): PropertyDecorator {
+  static Parameter(pos: HttpControllerParameterTypes, ...args: HttpControllerParameterFilter[]): PropertyDecorator {
     return (target, property) => {
-      const controller = target.constructor;
-      if (!ParametersContainer.has(controller)) {
-        ParametersContainer.set(controller, {
-          head: new Map(),
-          query: new Map(),
-          path: new Map(),
-          body: new Map(),
-        })
+      return transformParameter(property as string, pos, ...args)(target, property);
+    }
+  }
+
+  static readonly InComing = Object.freeze({
+    Head(name?: string, ...args: HttpControllerParameterFilter[]): PropertyDecorator {
+      return (target, property) => {
+        return transformParameter(name || (property as string), 'head', ...args)(target, property);
       }
-      const { query, path, body, head } = ParametersContainer.get(controller);
-      switch (pos) {
-        case 'head':
-          head.set(property, (ctx: Context, controller) => transformValue(controller, ctx.headers[property as string], args));
-          break;
-        case 'query':
-          query.set(property, (ctx: Context, controller) => transformValue(controller, ctx.query[property as string], args));
-          break;
-        case 'path':
-          path.set(property, async (ctx: Context, controller) => transformValue(controller, ctx.params[property as string], args));
-          break;
-        case 'body':
-          // @ts-ignore
-          body.set(property, async (ctx: Context, controller) => transformValue(controller, ctx.request.body, args));
-          break;
+    },
+    Query(name?: string, ...args: HttpControllerParameterFilter[]): PropertyDecorator {
+      return (target, property) => {
+        return transformParameter(name || (property as string), 'query', ...args)(target, property);
       }
+    },
+    Path(name?: string, ...args: HttpControllerParameterFilter[]): PropertyDecorator {
+      return (target, property) => {
+        return transformParameter(name || (property as string), 'path', ...args)(target, property);
+      }
+    },
+    Body(...args: HttpControllerParameterFilter[]): PropertyDecorator {
+      return (target, property) => {
+        return transformParameter(null, 'body', ...args)(target, property);
+      }
+    }
+  })
+}
+
+function transformParameter(
+  name: string,
+  pos: HttpControllerParameterTypes,
+  ...args: HttpControllerParameterFilter[]
+): PropertyDecorator {
+  return (target, property) => {
+    const controller = target.constructor;
+    if (!ParametersContainer.has(controller)) {
+      ParametersContainer.set(controller, {
+        head: new Map(),
+        query: new Map(),
+        path: new Map(),
+        body: new Map(),
+      })
+    }
+    const { query, path, body, head } = ParametersContainer.get(controller);
+    switch (pos) {
+      case 'head':
+        head.set(property, (ctx: Context, controller) => transformValue(controller, ctx.headers[name], args));
+        break;
+      case 'query':
+        query.set(property, (ctx: Context, controller) => transformValue(controller, ctx.query[name], args));
+        break;
+      case 'path':
+        path.set(property, async (ctx: Context, controller) => transformValue(controller, ctx.params[name], args));
+        break;
+      case 'body':
+        // @ts-ignore
+        body.set(property, async (ctx: Context, controller) => transformValue(controller, ctx.request.body, args));
+        break;
     }
   }
 }
 
-async function transformValue<T extends Controller>(target: T, val: any, args: (((v: string) => any) | string)[]) {
+async function transformValue<T extends Controller>(target: T, val: any, args: HttpControllerParameterFilter[]) {
   let value = val;
   for (let i = 0; i < args.length; i++) {
     const fn = args[i];
