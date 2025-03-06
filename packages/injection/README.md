@@ -1,70 +1,75 @@
-```ts
-import { Component, Context, inject, injectable } from './index';
+# @braken/injection
 
-const ctx = new Context();
+Braken 框架的依赖注入模块，提供 IoC 容器和依赖注入支持。
 
-abstract class Service extends Component {
-  abstract main(): Promise<void>;
-}
+## 安装
 
-const Injectable = injectable();
-const ServiceInjectable = injectable(async (ctx: Service) => {
-  if (ctx.main) {
-    await ctx.main();
-  }
-});
-
-@Injectable
-class X extends Component {
-  public readonly time = Date.now();
-}
-
-@ServiceInjectable
-class A extends Service {
-  async main(): Promise<void> {
-    console.log('a main')
-  }
-}
-
-@Injectable
-class B extends A {
-  @inject(X)
-  public readonly x1: X;
-}
-
-@Injectable
-class C extends B {
-  @inject(X)
-  public readonly x2: X;
-}
-
-@Injectable
-class D extends C {
-  @inject(X)
-  public readonly x3: X;
-}
-
-@Injectable
-class E extends B {
-  @inject(X)
-  public readonly x4: X;
-}
-
-@Injectable
-class F extends A {
-  @inject(X)
-  public readonly x5: X;
-}
-
-@Injectable
-class G extends E {
-  @inject(F)
-  public readonly f: F;
-}
-
-ctx.use(D).then(res => console.log('d', res))
-// ctx.use(E).then(res => console.log('e', res))
-// ctx.use(F).then(res => console.log('f', res))
-// ctx.use(G).then(res => console.log('g', res))
-// console.log(container)
+```bash
+pnpm add @braken/injection
 ```
+
+## 特性
+
+- 依赖注入容器
+- 装饰器支持
+- 生命周期管理
+- 作用域管理
+- 循环依赖处理
+- 动态注入
+
+## 使用示例
+
+```typescript
+import { Injectable, Inject } from '@braken/injection';
+
+@Injectable()
+class UserService {
+  @Inject()
+  private logger: Logger;
+
+  async findUser(id: string) {
+    this.logger.info('Finding user', { id });
+    // 查找用户逻辑
+  }
+}
+
+@Injectable()
+class UserController {
+  @Inject()
+  private userService: UserService;
+
+  async getUser(id: string) {
+    return this.userService.findUser(id);
+  }
+}
+```
+
+## API
+
+### 装饰器
+
+- `@Injectable`: 标记可注入类
+- `@Inject`: 注入依赖
+- `@Optional`: 标记可选依赖
+- `@Scope`: 定义作用域
+- `@PostConstruct`: 构造后回调
+- `@PreDestroy`: 销毁前回调
+
+### 容器
+
+```typescript
+import { Container } from '@braken/injection';
+
+const container = new Container();
+
+// 注册服务
+container.register(UserService);
+container.register(UserController);
+
+// 获取实例
+const userController = container.get(UserController);
+```
+
+## 许可证
+
+MIT
