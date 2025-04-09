@@ -165,7 +165,9 @@ export class Application extends Router {
       controller.initialize(this, path);
     }
     const Page = this.createPage();
-    return ReactDOM.createRoot(id).render(createElement(Page, null, notfound));
+    const root = ReactDOM.createRoot(id);
+    root.render(createElement(Page, null, notfound));
+    return () => root.unmount();
   }
 
   public joinUrl(url: string) {
